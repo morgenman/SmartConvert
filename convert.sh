@@ -8,7 +8,7 @@ mkdir ~/.temp/SmartConvert/
 echo Enter the directory containing notebook files
 read DIR
 #$DIR is directory containing files
-cd $DIR
+cd $DIR/
 
 #For loop for each .notebook file
 find . -name "*.notebook" -type f -exec cp {} "~/.temp/SmartConvert/" \;
