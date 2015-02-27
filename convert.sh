@@ -5,15 +5,29 @@
 mkdir ~/.temp/SmartConvert/
 
 #ask for directory (pass through as arguement?) in which .notebook files are in
-echo Enter the directory containing notebook files
+echo Enter the directory containing notebook file:
+#Note, you cannot drag a directory on the script, will not accept '/home/...' only /home/ 
+#Furthermore, no parent directories allowed to have spaces in them
 read DIR
 #$DIR is directory containing files
-cd $DIR/
+#cd $DIR
+cd /home/koru/Cole
 
 #For loop for each .notebook file
-find . -name "*.notebook" -type f -exec cp {} "~/.temp/SmartConvert/" \;
+find . -name "*.notebook" -type f -exec cp {} ~/.temp/SmartConvert/ \;
 #Extract .notebook to temp dir
+cd ~/.temp/SmartConvert/
+for file in *.notebook
+do
+ mv "$file" "${file%.notebook}.zip"
+done
 
+for f in *.*; do
+  dir=${f%.zip}
+
+  unzip -d "./$dir" "./$f"
+  rm "$f"
+done
 #Remove "/annotationmetadata" "assessment.xml" "metadata.db" "metadata.rdf" "metadata.xml" "preview.png" "settings.xml" from folder
 
 #rename svg files using lmsmanifest to reflect page order (errr not sure how I'm going to implement this)
@@ -29,4 +43,4 @@ find . -name "*.notebook" -type f -exec cp {} "~/.temp/SmartConvert/" \;
 
 
 echo "All done! Deleting temporary files."
-rm -rf ~/.temp/SmartConvert/
+#rm -rf ~/.temp/SmartConvert/
