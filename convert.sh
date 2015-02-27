@@ -5,9 +5,13 @@
 mkdir ~/.temp/SmartConvert/
 
 #ask for directory (pass through as arguement?) in which .notebook files are in
+echo Enter the directory containing notebook files
+read DIR
+#$DIR is directory containing files
+cd $DIR
 
 #For loop for each .notebook file
-
+find . -name "*.notebook" -type f -exec cp {} "~/.temp/SmartConvert/" \;
 #Extract .notebook to temp dir
 
 #Remove "/annotationmetadata" "assessment.xml" "metadata.db" "metadata.rdf" "metadata.xml" "preview.png" "settings.xml" from folder
