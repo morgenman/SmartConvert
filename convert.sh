@@ -2,6 +2,7 @@
 # This script should take a smartboard notebook file, extract it to a temp dir, convert the svg's to png, and compile them into pdf
 # Depends on imagemagick, unzip
 # Note, must add "File:///users/username/.temp/SmartConvert/extracteddir/" before symbolic links in svg before conversion or imagemagic will not recognized embedded images
+rm -rf ~/.temp/SmartConvert/ #REMOVE LATER FOR DEBUG PURPOSES ONLY
 mkdir ~/.temp/SmartConvert/
 
 #ask for directory (pass through as arguement?) in which .notebook files are in
@@ -28,6 +29,15 @@ for f in *.*; do
   unzip -d "./$dir" "./$f"
   rm "$f"
 done
+#Recursive commands for each directory
+for D in *; do
+    if [ -d "${D}" ]; then
+        echo "looping  --  ${D}"   #for debug purposes
+        cd ~/".temp/SmartConvert/${D}/"
+        echo changed to $D
+        echo > Youareintherightdir.txt
+        cd ~/".temp/SmartConvert/"
+        echo "changed to temp folder (looping\)"
 #Remove "/annotationmetadata" "assessment.xml" "metadata.db" "metadata.rdf" "metadata.xml" "preview.png" "settings.xml" from folder
 
 #rename svg files using lmsmanifest to reflect page order (errr not sure how I'm going to implement this)
@@ -36,11 +46,12 @@ done
 #batch convert .svg to png (bmp?) and compile to pdf (preserving name of folder) using imagemagick
 
 #copy file to original direcotry "/PDF Files" 
+    fi
+done
 
-#delete directory in temp/smartconvert
 
 #loop
 
-
+#delete directory in temp/smartconvert
 echo "All done! Deleting temporary files."
 #rm -rf ~/.temp/SmartConvert/
