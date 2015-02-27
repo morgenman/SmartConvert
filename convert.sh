@@ -12,7 +12,8 @@ mkdir ~/.temp/SmartConvert/
 
 #Remove "/annotationmetadata" "assessment.xml" "metadata.db" "metadata.rdf" "metadata.xml" "preview.png" "settings.xml" from folder
 
-#rename svg files using imsmanifest to reflect page order (errr not sure how I'm going to implement this)
+#rename svg files using lmsmanifest to reflect page order (errr not sure how I'm going to implement this)
+#remove lmsmanifest
 
 #batch convert .svg to png (bmp?) and compile to pdf (preserving name of folder) using imagemagick
 
