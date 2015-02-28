@@ -36,16 +36,20 @@ for D in *; do
         cd ~/".temp/SmartConvert/${D}/"
         echo changed to $D
         echo > Youareintherightdir.txt
+	    #rename svg files using lmsmanifest to reflect page order (errr not sure how I'm going to implement this)
+	    i=0
+        while read filename; do
+            mv $filename file$i.svg
+            let i++
+        done < <(xpath -q -e '//resource[@identifier="group0_pages"]/file/@href' ~/.temp/SmartConvert/"${D}"/imsmanifest.xml | cut -d\" -f2)
+	    #remove excess files
+
+	    #batch convert .svg to png (bmp?) and compile to pdf (preserving name of folder) using imagemagick
+        
+	    #copy file to original direcotry "/PDF Files" 
         cd ~/".temp/SmartConvert/"
         echo "changed to temp folder (looping\)"
-#Remove "/annotationmetadata" "assessment.xml" "metadata.db" "metadata.rdf" "metadata.xml" "preview.png" "settings.xml" from folder
 
-#rename svg files using lmsmanifest to reflect page order (errr not sure how I'm going to implement this)
-#remove lmsmanifest
-
-#batch convert .svg to png (bmp?) and compile to pdf (preserving name of folder) using imagemagick
-
-#copy file to original direcotry "/PDF Files" 
     fi
 done
 
