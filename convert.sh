@@ -1,7 +1,7 @@
 #!/bin/bash
 # This script should take a smartboard notebook file, extract it to a temp dir, convert the svg's to png, and compile them into pdf
-# Depends on imagemagick, unzip
-# Note, must add "File:///users/username/.temp/SmartConvert/extracteddir/" before symbolic links in svg before conversion or imagemagic will not recognized embedded images
+# Depends on imagemagick, unzip, libxml-xpath-perl
+# Note, must add "File:///home/username/.temp/SmartConvert/extracteddir/" before symbolic links in svg before conversion or imagemagic will not recognized embedded images
 rm -rf ~/.temp/SmartConvert/ #REMOVE LATER FOR DEBUG PURPOSES ONLY
 mkdir ~/.temp/SmartConvert/
 
@@ -10,6 +10,8 @@ echo Enter the directory containing notebook file:
 #Note, you cannot drag a directory on the script, will not accept '/home/...' only /home/ 
 #Furthermore, no parent directories allowed to have spaces in them
 read DIR
+echo Enter your username:
+read USR
 #$DIR is directory containing files
 #cd $DIR
 cd /home/koru/Cole
@@ -34,7 +36,6 @@ for D in *; do
     if [ -d "${D}" ]; then
         echo "looping  --  ${D}"   #for debug purposes
         cd ~/".temp/SmartConvert/${D}/"
-        echo changed to $D
         echo > Youareintherightdir.txt
 	    #rename svg files using lmsmanifest to reflect page order (errr not sure how I'm going to implement this)
 	    i=0
@@ -42,8 +43,14 @@ for D in *; do
             mv $filename file$i.svg
             let i++
         done < <(xpath -q -e '//resource[@identifier="group0_pages"]/file/@href' ~/.temp/SmartConvert/"${D}"/imsmanifest.xml | cut -d\" -f2)
+	    
+	    #fix svg's to include linked pictures 
+	    pth="file:///home/koru/.temp/SmartConvert/${D}/images"
+	    echo $pth
+	    find "/home/koru/.temp/SmartConvert/${D}" -type f -exec sed -i "s+images+$pth+g" {} \;
+	    
 	    #remove excess files
-
+        
 	    #batch convert .svg to png (bmp?) and compile to pdf (preserving name of folder) using imagemagick
         
 	    #copy file to original direcotry "/PDF Files" 
