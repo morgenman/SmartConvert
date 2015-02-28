@@ -2,7 +2,6 @@
 # This script should take a smartboard notebook file, extract it to a temp dir, convert the svg's to png, and compile them into pdf
 # Depends on imagemagick, unzip, libxml-xpath-perl
 # Note, must add "File:///home/username/.temp/SmartConvert/extracteddir/" before symbolic links in svg before conversion or imagemagic will not recognized embedded images
-rm -rf ~/.temp/SmartConvert/ #REMOVE LATER FOR DEBUG PURPOSES ONLY
 mkdir ~/.temp/SmartConvert/
 
 #ask for directory (pass through as arguement?) in which .notebook files are in
