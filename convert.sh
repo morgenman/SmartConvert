@@ -13,8 +13,8 @@ read DIR
 echo Enter your username:
 read USR
 #$DIR is directory containing files
-#cd $DIR
-cd /home/koru/Cole
+cd $DIR
+#cd /home/koru/Cole
 
 #For loop for each .notebook file
 find . -name "*.notebook" -type f -exec cp {} ~/.temp/SmartConvert/ \;
@@ -38,7 +38,7 @@ for D in *; do
         cd ~/".temp/SmartConvert/${D}/"
         echo > Youareintherightdir.txt
 	    #rename svg files using lmsmanifest to reflect page order (errr not sure how I'm going to implement this)
-	    i=0
+	    i=10
         while read filename; do
             mv $filename file$i.svg
             let i++
@@ -49,11 +49,12 @@ for D in *; do
 	    echo $pth
 	    find "/home/koru/.temp/SmartConvert/${D}" -type f -exec sed -i "s+images+$pth+g" {} \;
 	    
-	    #remove excess files
-        
 	    #batch convert .svg to png (bmp?) and compile to pdf (preserving name of folder) using imagemagick
+        ls file*.svg | sort -n | tr '\n' ' ' | sed "s+$+\ '${D}'.pdf+" | xargs convert
         
 	    #copy file to original direcotry "/PDF Files" 
+	    cp "${D}.pdf" "$DIR/${D}.pdf"
+	    
         cd ~/".temp/SmartConvert/"
         echo "changed to temp folder (looping\)"
 
@@ -65,4 +66,4 @@ done
 
 #delete directory in temp/smartconvert
 echo "All done! Deleting temporary files."
-#rm -rf ~/.temp/SmartConvert/
+rm -rf ~/.temp/SmartConvert/
