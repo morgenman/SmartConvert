@@ -14,10 +14,10 @@ echo Enter your username:
 read USR
 #$DIR is directory containing files
 cd $DIR
-#cd /home/koru/Cole
 
-#For loop for each .notebook file
+#move all notebook files to temp dir
 find . -name "*.notebook" -type f -exec cp {} ~/.temp/SmartConvert/ \;
+
 #Extract .notebook to temp dir
 cd ~/.temp/SmartConvert/
 for file in *.notebook
@@ -31,12 +31,14 @@ for f in *.*; do
   unzip -d "./$dir" "./$f"
   rm "$f"
 done
+
+
 #Recursive commands for each directory
 for D in *; do
     if [ -d "${D}" ]; then
-        echo "looping  --  ${D}"   #for debug purposes
+        #echo "looping  --  ${D}"   #for debug purposes
         cd ~/".temp/SmartConvert/${D}/"
-        echo > Youareintherightdir.txt
+        #echo > Youareintherightdir.txt
 	    #rename svg files using lmsmanifest to reflect page order (errr not sure how I'm going to implement this)
 	    i=10
         while read filename; do
@@ -45,9 +47,9 @@ for D in *; do
         done < <(xpath -q -e '//resource[@identifier="group0_pages"]/file/@href' ~/.temp/SmartConvert/"${D}"/imsmanifest.xml | cut -d\" -f2)
 	    
 	    #fix svg's to include linked pictures 
-	    pth="file:///home/koru/.temp/SmartConvert/${D}/images"
-	    echo $pth
-	    find "/home/koru/.temp/SmartConvert/${D}" -type f -exec sed -i "s+images+$pth+g" {} \;
+	    pth="file:///home/$USR/.temp/SmartConvert/${D}/images"
+	    #echo $pth
+	    find "/home/$USR/.temp/SmartConvert/${D}" -type f -exec sed -i "s+images+$pth+g" {} \;
 	    
 	    #batch convert .svg to png (bmp?) and compile to pdf (preserving name of folder) using imagemagick
         ls file*.svg | sort -n | tr '\n' ' ' | sed "s+$+\ '${D}'.pdf+" | xargs convert
@@ -56,14 +58,14 @@ for D in *; do
 	    cp "${D}.pdf" "$DIR/${D}.pdf"
 	    
         cd ~/".temp/SmartConvert/"
-        echo "changed to temp folder (looping\)"
+        #echo "changed to temp folder (looping\)"
 
     fi
 done
 
 
-#loop
 
 #delete directory in temp/smartconvert
 echo "All done! Deleting temporary files."
+echo "PDF files will be located in $DIR"
 rm -rf ~/.temp/SmartConvert/
