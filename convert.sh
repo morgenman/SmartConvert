@@ -39,7 +39,7 @@ for D in *; do
         #echo "looping  --  ${D}"   #for debug purposes
         cd ~/".temp/SmartConvert/${D}/"
         #echo > Youareintherightdir.txt
-	    #rename svg files using lmsmanifest to reflect page order (errr not sure how I'm going to implement this)
+	    #rename svg files using lmsmanifest to reflect page order 
 	    i=10
         while read filename; do
             mv $filename file$i.svg
